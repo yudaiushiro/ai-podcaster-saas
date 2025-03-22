@@ -4,29 +4,28 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/hooks/useAuth";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setErrorMessage("");
     setIsLoading(true);
 
     try {
       const result = await login(email, password);
       if (result.success) {
-        router.push("/");
+        router.push("/dashboard");
       } else {
-        setErrorMessage(result.error || "ログインに失敗しました");
+        toast.error(result.error || "ログインに失敗しました");
       }
     } catch (error) {
-      setErrorMessage("ログイン中にエラーが発生しました");
+      toast.error("ログイン中にエラーが発生しました");
     } finally {
       setIsLoading(false);
     }
@@ -34,16 +33,6 @@ export default function LoginForm() {
 
   return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      {errorMessage && (
-        <div className="bg-red-50 border-l-4 border-red-400 p-4">
-          <div className="flex">
-            <div>
-              <p className="text-sm text-red-700">{errorMessage}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="space-y-4">
         <div>
           <label

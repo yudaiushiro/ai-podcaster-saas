@@ -10,8 +10,11 @@ export function Header() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await logout();
-    router.push("/login");
+    const result = await logout();
+    if (result.success) {
+      // ログアウト成功時はトップページ（ランディングページ）に遷移
+      router.push("/");
+    }
   };
 
   return (
