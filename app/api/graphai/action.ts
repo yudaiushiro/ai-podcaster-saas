@@ -19,6 +19,18 @@ export async function runGraphAI(inputText: string) {
           params: {
             model: "gpt-4o-mini-2024-07-18",
             max_tokens: 15000,
+            system: "与えられた情報を分かりやすく500文字で解説して下さい"
+          },
+          isResult: false,
+        },
+        node3: {
+          agent: "openAIAgent",
+          inputs: {
+            prompt: ":node2.content",
+          },
+          params: {
+            model: "gpt-4o-mini-2024-07-18",
+            system: "与えられた情報を二人の対話形式で分かりやすく説明して下さい"
           },
           isResult: true,
         },

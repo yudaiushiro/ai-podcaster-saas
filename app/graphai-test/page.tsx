@@ -56,14 +56,18 @@ export default function GraphAIDemo() {
           <label htmlFor="inputText" className="block text-gray-700 mb-2">
             テキスト入力:
           </label>
-          <input
-            type="text"
+          <textarea
             id="inputText"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="GraphAIで処理するテキスト"
+            rows={10}
+            maxLength={20000}
           />
+          <div className="text-sm text-gray-500 mt-1">
+            {inputText.length}/20000文字
+          </div>
         </div>
         
         <button 
