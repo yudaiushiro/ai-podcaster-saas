@@ -156,29 +156,20 @@ CREATE POLICY admin_content_policy ON contents
 
 ### 5.1 エージェント構成
 
-既存の GraphAI エージェントを拡張し、Next.js アプリケーションに統合します：
+既存の GraphAI エージェントを直接参照して、Next.js アプリケーションに統合します：
 
 ```typescript
-// app/lib/graphai/agents/scriptGenerator.ts
-import { AgentFunction } from "graphai";
+// app/actions/content.ts
+import { GraphAI } from 'graphai';
+import addBGMAgent from '../../ai-podcaster/src/agents/add_bgm_agent';
+import ttsOpenaiAgent from '../../ai-podcaster/src/agents/tts_openai_agent';
 
-export const scriptGeneratorAgent: AgentFunction = async ({ namedInputs }) => {
+// スクリプト生成エージェントを追加
+const scriptGeneratorAgent = async ({ namedInputs }) => {
   const { text, url } = namedInputs;
   // LLM を使用してスクリプトを生成
   // ...
   return { script };
-};
-
-// app/lib/graphai/graphs/audio-generation.ts
-export const audioGenerationGraph = {
-  version: 0.5,
-  concurrency: 8,
-  nodes: {
-    script: {
-      value: {},
-    },
-    // ... 既存の graph_data を拡張
-  },
 };
 ```
 
@@ -191,9 +182,13 @@ GraphAI エージェントを Server Actions から呼び出し、非同期処�
 'use server'
 
 import { createClient } from '@/lib/db/client';
-import { audioGenerationGraph } from '@/lib/graphai/graphs/audio-generation';
-import { GraphAI } from 'graphai';
-import * as agents from '@/lib/graphai/agents';
+import { GraphAI, GraphData } from 'graphai';
+// ai-podcasterからエージェントを直接インポート
+import addBGMAgent from '../../ai-podcaster/src/agents/add_bgm_agent';
+import ttsOpenaiAgent from '../../ai-podcaster/src/agents/tts_openai_agent';
+import combineFilesAgent from '../../ai-podcaster/src/agents/combine_files_agent';
+// main.tsから参考にしたgraph_dataを使用
+import { ScriptData, PodcastScript } from '../../ai-podcaster/src/type';
 
 export async function generateAudioContent(contentId: string) {
   const supabase = createClient();
@@ -212,8 +207,22 @@ export async function generateAudioContent(contentId: string) {
     .eq('id', contentId);
   
   try {
-    // GraphAI 初期化
-    const graph = new GraphAI(audioGenerationGraph, agents);
+    // GraphAI用のグラフ定義（main.tsのgraph_dataを参考）
+    const audioGenerationGraph: GraphData = {
+      // ai-podcaster/src/main.tsのgraph_dataを参考に作成
+      version: 0.5,
+      nodes: {
+        // 必要なノード定義
+      }
+    };
+    
+    // GraphAI 初期化（ai-podcasterのエージェントを直接使用）
+    const graph = new GraphAI(audioGenerationGraph, {
+      addBGMAgent,
+      ttsOpenaiAgent,
+      combineFilesAgent,
+      // 他の必要なエージェント
+    });
     
     // スクリプト注入
     graph.injectValue('script', content.script);
