@@ -23,7 +23,6 @@ export function Sidebar() {
     <div className="w-64 h-screen bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
       <div className="flex flex-col h-full">
         <div className="p-4">
-          <h2 className="text-lg font-semibold mb-4">AI Podcaster</h2>
           <Link
             href="/new"
             className="flex items-center gap-2 bg-indigo-600 text-white px-3 py-2 rounded-md font-medium text-sm"
@@ -57,15 +56,6 @@ export function Sidebar() {
         </nav>
         <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <ul className="space-y-1">
-            <li>
-              <Link
-                href="/"
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                <LayoutDashboard size={18} />
-                <span>ダッシュボード</span>
-              </Link>
-            </li>
             <li>
               <Link
                 href="/settings"
