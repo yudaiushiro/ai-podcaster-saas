@@ -1,38 +1,43 @@
 'use server';
 
 import { GraphAI } from "graphai";
-import * as agents from "@graphai/vanilla";
+import { openAIAgent } from "@graphai/llm_agents";
 
 export async function runGraphAI(inputText: string) {
   try {
-    // GraphAIのグラフ定義 - 非常にシンプルなバージョン
     const graphData = {
       version: 0.5,
       nodes: {
         node1: {
-          value: inputText || "hello, GraphAI",
+          value: inputText,
         },
         node2: {
-          agent: "copyAgent",
-          inputs: {text: ":node1"},
+          agent: "openAIAgent",
+          inputs: {
+            prompt: ":node1",
+          },
+          params: {
+            model: "gpt-4o-mini-2024-07-18",
+            max_tokens: 15000,
+          },
           isResult: true,
         },
       },
     };
 
-    // GraphAIの初期化と実行
+    const agents = { openAIAgent };
     const graph = new GraphAI(graphData, agents);
     const results = await graph.run();
-    
-    return { 
-      success: true, 
+
+    return {
+      success: true,
       data: results
     };
-    
+
   } catch (error) {
     console.error('GraphAI実行エラー:', error);
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: error instanceof Error ? error.message : String(error)
     };
   }
