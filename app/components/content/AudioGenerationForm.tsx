@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import { PodcastScript } from "@/ai-podcaster/src/type";
 
 interface AudioGenerationFormProps {
   onSubmit: (data: {
@@ -8,16 +9,20 @@ interface AudioGenerationFormProps {
     useBgm: boolean;
   }) => void;
   isProcessing?: boolean;
+  onScriptGenerate?: (script: PodcastScript) => void;
 }
 
 export function AudioGenerationForm({
   onSubmit,
   isProcessing = false,
+  onScriptGenerate,
 }: AudioGenerationFormProps) {
   const [inputType, setInputType] = useState<"url" | "text">("url");
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [useBgm, setUseBgm] = useState(true);
+  const [isScriptGenerated, setIsScriptGenerated] = useState(false);
+  const [isGeneratingScript, setIsGeneratingScript] = useState(false);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -27,6 +32,63 @@ export function AudioGenerationForm({
       title,
       useBgm,
     });
+  };
+
+  const handleGenerateScript = async () => {
+    setIsGeneratingScript(true);
+    
+    try {
+      // 実際の実装では、ここでAPIを呼び出してスクリプトを生成します
+      // デモ目的で遅延を追加（実際の実装では削除してください）
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // サンプルスクリプト（実際の実装では、APIレスポンスからスクリプトを設定します）
+      const dummyScript: PodcastScript = {
+        title: title,
+        description: "自動生成された説明",
+        reference: inputType === "url" ? content : "",
+        tts: "openAI",
+        voices: ["nova", "onyx"],
+        speakers: ["Host", "Guest"],
+        padding: 0,
+        aspectRatio: "16:9",
+        script: [
+          {
+            speaker: "Host",
+            text: "こんにちは、AIポッドキャスターへようこそ。今日は興味深いトピックについて話していきます。",
+            caption: undefined,
+            duration: 5,
+            filename: "host_1.mp3",
+            imagePrompt: undefined,
+            imageIndex: 0,
+          },
+          {
+            speaker: "Guest",
+            text: "お招きいただきありがとうございます。このトピックについてお話しできることを嬉しく思います。",
+            caption: undefined,
+            duration: 4,
+            filename: "guest_1.mp3",
+            imagePrompt: undefined,
+            imageIndex: 1,
+          },
+        ],
+        filename: "dummy.mp3",
+        voicemap: { "Host": "nova", "Guest": "onyx" },
+        ttsAgent: "openai",
+        images: [],
+      };
+      
+      // 親コンポーネントのスクリプト状態を更新
+      if (onScriptGenerate) {
+        onScriptGenerate(dummyScript);
+      }
+      
+      setIsScriptGenerated(true);
+    } catch (error) {
+      console.error("スクリプト生成中にエラーが発生しました", error);
+    } finally {
+      setIsGeneratingScript(false);
+    }
   };
 
   return (
@@ -125,12 +187,24 @@ export function AudioGenerationForm({
             BGMを追加する
           </label>
         </div>
+        
+        {/* スクリプト生成ボタン */}
+        <div>
+          <button
+            type="button"
+            onClick={handleGenerateScript}
+            disabled={isGeneratingScript || !content || !title}
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGeneratingScript ? "スクリプト生成中..." : "スクリプト生成"}
+          </button>
+        </div>
       </div>
 
       <div>
         <button
           type="submit"
-          disabled={isProcessing || !content || !title}
+          disabled={isProcessing || !content || !title || !isScriptGenerated}
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? "生成中..." : "音声生成"}

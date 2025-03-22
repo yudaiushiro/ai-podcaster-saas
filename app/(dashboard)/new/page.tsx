@@ -113,6 +113,7 @@ export default function NewContentPage() {
               <AudioGenerationForm
                 onSubmit={handleAudioSubmit}
                 isProcessing={isProcessing}
+                onScriptGenerate={setScript}
               />
             </div>
             <div className="space-y-6">
