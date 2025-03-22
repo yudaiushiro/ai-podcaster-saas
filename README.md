@@ -141,7 +141,7 @@ yarn dev
 │   ├── admin/                          # 管理者用画面
 │   ├── components/                     # コンポーネント
 │   └── ...
-├── src/                                # AIポッドキャスト生成コア
+├── ai-podcaster/src/                   # AIポッドキャスト生成コア
 │   ├── agents/                         # GraphAI エージェント
 │   ├── main.ts                         # 音声ファイル生成メイン処理
 │   ├── movie.ts                        # 動画ファイル生成処理
@@ -160,7 +160,7 @@ yarn dev
 
 ### AI Podcaster コア機能
 
-AI Podcasterのコア機能は`src/`ディレクトリに実装されています。主要ファイルと機能は以下の通りです：
+AI Podcasterのコア機能は`ai-podcaster/src/`ディレクトリに実装されています。主要ファイルと機能は以下の通りです：
 
 - **main.ts**: 音声ファイル生成のメイン処理
 - **movie.ts**: ポッドキャスト動画（映像）ファイル生成処理
@@ -226,7 +226,7 @@ git checkout -b feature/your-feature-name
 
 質問やサポートが必要な場合は、Issueを作成するか、以下の連絡先までお問い合わせください：
 
-- Email: support@example.com
+- Email: yudai.ushiro@gmail.com
 
 ---
 

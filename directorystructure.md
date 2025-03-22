@@ -75,7 +75,7 @@
 │   ├── globals.css                     # グローバルスタイル
 │   ├── layout.tsx                      # ルートレイアウト
 │   └── page.tsx                        # ホームページ (ランディング)
-├── src/                                # AIポッドキャスト生成コア
+├── ai-podcaster/src/                   # AIポッドキャスト生成コア
 │   ├── agents/                         # GraphAI エージェント
 │   │   ├── tts_nijivoice_agent.ts      # にじボイスTTSエージェント
 │   │   ├── tts_openai_agent.ts         # OpenAI TTSエージェント
@@ -134,11 +134,11 @@
 - 認証API → `app/api/auth/`
 
 #### コンテンツ生成コア
-- GraphAIエージェント → `src/agents/`
-- 音声生成処理 → `src/main.ts`
-- 画像生成処理 → `src/images.ts`
-- 動画生成処理 → `src/movie.ts`
-- スクリプト加工 → `src/fixtext.ts`, `src/imagep.ts`, `src/split.ts`
+- GraphAIエージェント → `ai-podcaster/src/agents/` から直接参照
+- 音声生成処理 → `ai-podcaster/src/main.ts` から直接参照
+- 画像生成処理 → `ai-podcaster/src/images.ts` から直接参照
+- 動画生成処理 → `ai-podcaster/src/movie.ts` から直接参照
+- スクリプト加工 → `ai-podcaster/src/fixtext.ts`, `ai-podcaster/src/imagep.ts`, `ai-podcaster/src/split.ts` から直接参照
 
 #### ルーティング
 - ダッシュボード → `app/(dashboard)/`

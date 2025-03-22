@@ -68,8 +68,8 @@ AIポッドキャストSaaSでは、以下の技術スタックを採用しま�
   - config.ts  - 環境設定の一元管理
 
 ## GraphAI 実装規則
-- GraphAI エージェント定義は `app/lib/graphai/agents/` に配置
-- GraphAI グラフ定義は `app/lib/graphai/graphs/` に配置
+- GraphAI エージェントは `ai-podcaster/src/agents/` から直接参照
+- GraphAI グラフ定義は `ai-podcaster/src/` の各ファイル内部で定義されたものを参照
 - メディア生成パイプラインは GraphAI を使用して実装
 
 ## Supabase 実装規則

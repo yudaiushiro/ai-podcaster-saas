@@ -427,20 +427,20 @@ STORAGE_BUCKET=your-bucket-name
 
 ### 10.1 既存コードとの統合
 
-既存の AI Podcaster コードからの主要な統合ポイント：
+既存の AI Podcaster コードは移動せず、そのまま参照して使用します：
 
 1. **GraphAI エージェント**:
-   - `ai-podcaster/src/agents/*.ts` → `app/lib/graphai/agents/`
+   - `ai-podcaster/src/agents/*.ts` のエージェントを直接参照して使用
 
 2. **グラフ定義**:
-   - `ai-podcaster/src/main.ts` の graph_data → `app/lib/graphai/graphs/audio-generation.ts`
-   - `ai-podcaster/src/movie.ts` の graph_data → `app/lib/graphai/graphs/video-generation.ts`
+   - `ai-podcaster/src/main.ts` の graph_data を参考に処理を実装
+   - `ai-podcaster/src/movie.ts` の graph_data を参考に処理を実装 
 
 3. **型定義**:
-   - `ai-podcaster/src/type.ts` → `app/lib/api/types.ts`
+   - `ai-podcaster/src/type.ts` の型を `app/lib/api/types.ts` から参照
 
 4. **ユーティリティ関数**:
-   - 必要な処理を `app/lib/utils/` に抽出
+   - `ai-podcaster/src/` のユーティリティ関数を必要に応じて直接参照
 
 ### 10.2 Supabase との統合
 
