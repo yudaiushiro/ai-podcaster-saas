@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { processOnServer } from '../api/graphai-server/action';
+import { processOnServer } from '../api/sample-server/action';
 
 export default function ServerTest() {
   const [inputText, setInputText] = useState('こんにちは、サーバー');
