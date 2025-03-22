@@ -91,6 +91,32 @@ yarn dev
 
 アプリケーションは http://localhost:3000 で実行されます。
 
+### サブモジュールの管理
+
+本プロジェクトは`ai-podcaster`ディレクトリをGitサブモジュールとして管理しています。サブモジュールを正しく取得するには以下の手順に従ってください。
+
+1. サブモジュールを含めたリポジトリのクローン
+```bash
+git clone --recursive https://github.com/yourusername/ai-podcaster-saas.git
+cd ai-podcaster-saas
+```
+
+既にクローンしたリポジトリにサブモジュールを取得する場合：
+```bash
+git submodule update --init --recursive
+```
+
+2. サブモジュールの更新
+サブモジュールを最新の状態に更新するには：
+```bash
+git submodule update --remote
+```
+
+3. サブモジュールの利点
+- コアとなるAIポッドキャスト生成機能を分離して管理できます
+- 両リポジトリは独立して開発・バージョン管理が可能です
+- SaaSとしての機能と、AI生成コア部分を明確に分離できます
+
 ## 📖 使い方
 
 ### ユーザー向け
