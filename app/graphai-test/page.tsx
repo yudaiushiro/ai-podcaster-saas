@@ -16,6 +16,10 @@ export default function GraphAIDemo() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // デバッグ用のコンソールログを追加
+    console.log('handleSubmit called at:', new Date().toISOString());
+    
     setLoading(true);
     setError(null);
     setLogs([]);
@@ -26,6 +30,8 @@ export default function GraphAIDemo() {
       addLog("サーバーアクション呼び出し");
       // サーバー上でGraphAIを実行
       const response = await runGraphAI(inputText);
+      // レスポンスの詳細をログに追加
+      console.log('Server response:', response);
       addLog("サーバーからレスポンス受信");
       
       if (response.success) {

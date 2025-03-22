@@ -2,6 +2,7 @@
 
 import { GraphAI } from "graphai";
 import { openAIAgent } from "@graphai/llm_agents";
+import { copyAgent } from '@graphai/vanilla';
 
 export async function runGraphAI(inputText: string) {
   try {
@@ -32,14 +33,30 @@ export async function runGraphAI(inputText: string) {
             model: "gpt-4o-mini-2024-07-18",
             system: "与えられた情報を二人の対話形式で分かりやすく説明して下さい"
           },
+          isResult: false,
+        },
+        note4: {
+          agent: "copyAgent",     // agentを追加
+          params: {
+            namedKey: "text"      // パラメータを追加
+          },
+          inputs: {
+            text: ":node3.text"   // inputsとして指定
+          },
           isResult: true,
         },
       },
     };
 
-    const agents = { openAIAgent };
+    const agents = { 
+      openAIAgent,
+      copyAgent 
+    };
     const graph = new GraphAI(graphData, agents);
     const results = await graph.run();
+
+    // デバッグログを追加
+    console.log('GraphAI results:', JSON.stringify(results, null, 2));
 
     return {
       success: true,
