@@ -1,37 +1,60 @@
 # 技術スタック
 
+AIポッドキャストSaaSでは、以下の技術スタックを採用します。
+
 ## コア技術
-- TypeScript: ^5.3.0
-- Node.js: ^20.0.0
-- **AIモデル: claude-3-7-sonnet-20250219 (Anthropic Messages API 2023-06-01) ← バージョン変更禁止**
-- GraphAI: ^1.0.0 ← AI Agent管理のコアライブラリ
+
+- **TypeScript**: 静的型付けによる安全性と開発効率の向上
+- **Node.js**: サーバーサイドJavaScript実行環境
+- **GraphAI**: AIエージェントの管理と調整
 
 ## フロントエンド
-- Next.js: ^15.1.3
-- React: ^19.0.0
-- Tailwind CSS: ^3.4.17
-- shadcn/ui: ^2.1.8
-- Uppy: ^3.7.0 ← ファイルアップロード用
-- React Media Player: ^0.8.0 ← オーディオ/ビデオプレビュー用
+
+- **Next.js**: Reactフレームワーク（App Router採用）
+- **React**: UIコンポーネントライブラリ
+- **Tailwind CSS**: ユーティリティファーストCSSフレームワーク
+- **shadcn/ui**: 再利用可能なUIコンポーネント
 
 ## バックエンド
-- Next.js App Router (Server Components & Server Actions)
-- Supabase: ^2.38.0 ← データベース・認証・ストレージ
-- NextAuth.js: ^4.24.5 ← Supabaseと連携した認証
-- Zod: ^3.22.2 ← バリデーション
 
-## AI/メディア処理
-- Anthropic SDK: ^0.18.0 ← Claude APIの利用
-- FFmpeg-wasm: ^0.12.0 ← ブラウザ内でのメディア処理
-- ElevenLabs API: ^1.0.0 ← 音声合成 (TTS)
-- StabilityAI API: ^0.1.0 ← 画像生成
+- **Next.js App Router + Server Actions**: バックエンド処理の統合
+- **Supabase**: データベース、認証、ストレージの統合プラットフォーム
+  - **PostgreSQL**: リレーショナルデータベース
+  - **Supabase Auth**: 認証システム
+  - **Supabase Storage**: ファイルストレージ
+
+## AI/ML サービス
+
+- **OpenAI**: スクリプト生成とTTS（音声合成）
+- **Nijivoice**: 日本語TTS（音声合成）の選択肢
+- **Google Imagen**: 画像生成
+
+## メディア処理
+
+- **FFmpeg-wasm**: ブラウザ上での動画処理
+
+## デプロイ・インフラ
+
+- **Vercel**: Next.jsアプリケーションのホスティング
+- **Supabase**: バックエンドサービスのホスティング
 
 ## 開発ツール
-- npm: ^10.0.0
-- ESLint: ^9.0.0
-- TypeScript: ^5.3.0
-- Prettier: ^3.2.4
-- Husky: ^9.0.5 ← Git Hooks
+
+- **ESLint**: コード品質チェック
+- **Prettier**: コードフォーマッティング
+- **Cursor**: AI支援開発環境
+
+## テスト
+
+- **Jest**: JavaScriptテストフレームワーク
+- **React Testing Library**: Reactコンポーネントテスト
+- **Playwright**: E2Eテスト
+
+## モニタリング・ロギング
+
+- **Vercel Analytics**: 利用状況モニタリング
+- **Supabase Monitoring**: データベースパフォーマンス監視
+- **Sentry**: エラートラッキング
 
 ---
 

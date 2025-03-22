@@ -6,9 +6,8 @@
 /
 ├── app/                                # Next.jsのアプリケーションディレクトリ
 │   ├── api/                            # APIエンドポイント
-│   │   ├── auth/                       # 認証関連API
-│   │   │   └── [...nextauth]/          # NextAuth.js API routes
-│   │   │       └── route.ts
+│   │   ├── auth/                       # 認証関連API (Supabase Auth)
+│   │   │   └── route.ts
 │   │   ├── content/                    # コンテンツ生成API
 │   │   │   ├── audio/                  # 音声生成API
 │   │   │   │   └── route.ts
@@ -57,23 +56,14 @@
 │   │   │   ├── client.ts               # API クライアント (変更禁止)
 │   │   │   ├── types.ts                # 型定義 (変更禁止)
 │   │   │   └── config.ts               # 環境設定 (変更禁止)
-│   │   ├── auth/                       # 認証処理
-│   │   │   └── auth-options.ts         # NextAuth オプション
+│   │   ├── auth/                       # 認証処理 (Supabase Auth)
+│   │   │   └── auth-utils.ts           # 認証ユーティリティ
 │   │   ├── db/                         # データベース
 │   │   │   ├── schema/                 # Supabase スキーマ定義
 │   │   │   │   ├── content.ts          # コンテンツテーブル
 │   │   │   │   └── users.ts            # ユーザーテーブル
 │   │   │   ├── client.ts               # Supabaseクライアント
 │   │   │   └── queries.ts              # データベースクエリ
-│   │   ├── graphai/                    # GraphAI関連処理
-│   │   │   ├── agents/                 # カスタムエージェント
-│   │   │   │   ├── scriptGenerator.ts  # スクリプト生成エージェント
-│   │   │   │   ├── audioGenerator.ts   # 音声生成エージェント
-│   │   │   │   └── videoGenerator.ts   # 動画生成エージェント
-│   │   │   ├── graphs/                 # GraphAI グラフ定義
-│   │   │   │   ├── audio-generation.ts # 音声生成グラフ
-│   │   │   │   └── video-generation.ts # 動画生成グラフ
-│   │   │   └── utils.ts                # GraphAI ユーティリティ
 │   │   ├── storage/                    # ストレージ処理 (Supabase Storage)
 │   │   └── utils/                      # 共通関数
 │   ├── actions/                        # Server Actions
@@ -85,9 +75,27 @@
 │   ├── globals.css                     # グローバルスタイル
 │   ├── layout.tsx                      # ルートレイアウト
 │   └── page.tsx                        # ホームページ (ランディング)
+├── src/                                # AIポッドキャスト生成コア
+│   ├── agents/                         # GraphAI エージェント
+│   │   ├── tts_nijivoice_agent.ts      # にじボイスTTSエージェント
+│   │   ├── tts_openai_agent.ts         # OpenAI TTSエージェント
+│   │   ├── add_bgm_agent.ts            # BGM追加エージェント
+│   │   └── combine_files_agent.ts      # ファイル結合エージェント
+│   ├── main.ts                         # 音声ファイル生成メイン処理
+│   ├── movie.ts                        # 動画ファイル生成処理
+│   ├── images.ts                       # 画像ファイル生成処理
+│   ├── imagep.ts                       # imagePrompt追加処理
+│   ├── split.ts                        # セリフ分割処理
+│   ├── fixtext.ts                      # セリフ修正処理
+│   ├── translate.ts                    # 翻訳処理
+│   ├── type.ts                         # 型定義
+│   └── sharp.ts                        # 画像処理ユーティリティ
 ├── public/                             # 静的ファイル
 │   ├── images/                         # 画像ファイル
 │   └── sounds/                         # デフォルトサウンドファイル (BGM等)
+├── scripts/                            # スクリプトサンプル
+├── output/                             # 生成ファイル出力先
+├── music/                              # BGM音楽ファイル
 ├── middleware.ts                       # Next.js ミドルウェア (認証など)
 ├── node_modules/                       # 依存パッケージ
 ├── .git/                               # Gitリポジトリ
@@ -118,7 +126,6 @@
 - APIエンドポイント → `app/api/[endpoint]/route.ts`
 - Server Actions → `app/actions/`
 - データベース処理 → `app/lib/db/`
-- GraphAI処理 → `app/lib/graphai/`
 - ストレージ処理 → `app/lib/storage/`
 
 #### 認証
@@ -126,9 +133,16 @@
 - 認証処理 → `app/lib/auth/`
 - 認証API → `app/api/auth/`
 
+#### コンテンツ生成コア
+- GraphAIエージェント → `src/agents/`
+- 音声生成処理 → `src/main.ts`
+- 画像生成処理 → `src/images.ts`
+- 動画生成処理 → `src/movie.ts`
+- スクリプト加工 → `src/fixtext.ts`, `src/imagep.ts`, `src/split.ts`
+
 #### ルーティング
 - ダッシュボード → `app/(dashboard)/`
 - 管理者ページ → `app/admin/`
 - ランディングページ → `app/page.tsx`
 
-この構造は、Next.js App RouterとServer Actions、Supabase、GraphAIを最適に組み合わせ、コンテンツ生成システムに対応したものです。
+この構造は、Next.js App RouterとServer Actions、Supabase、既存のGraphAIコードを最適に組み合わせ、コンテンツ生成システムに対応したものです。
