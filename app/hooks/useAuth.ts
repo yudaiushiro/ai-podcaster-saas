@@ -115,21 +115,17 @@ export function useAuth() {
       }
       
       if (data.user) {
-        // ユーザーレコードをusersテーブルに追加
-        const { error: insertError } = await supabase
-          .from('users')
-          .insert([
-            {
-              id: data.user.id,
-              email: data.user.email,
-              full_name: name,
-            },
-          ]);
-          
-        if (insertError) {
-          console.error('ユーザー情報の保存エラー:', insertError);
-          return { success: false, error: 'ユーザー情報の保存に失敗しました' };
-        }
+        // auth.signUpが成功した場合、何もせず成功を返す
+        // Supabaseの設定でauth.user作成後に自動的にusersテーブルにレコードが追加される
+        // Row Level Securityがこの処理を妨げる可能性がある
+        console.log('認証ユーザー作成成功:', data.user.id);
+        
+        // ログイン状態を反映
+        setUser({
+          id: data.user.id,
+          email: data.user.email || '',
+          name: data.user.user_metadata?.full_name,
+        });
         
         return { success: true };
       }

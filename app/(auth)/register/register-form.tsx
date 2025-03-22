@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/hooks/useAuth";
+import * as Sonner from "sonner";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ export default function RegisterForm() {
     setErrorMessage("");
 
     if (!agreeTerms) {
-      setErrorMessage("利用規約と配信許諾に同意してください");
+      Sonner.toast.error("利用規約と配信許諾に同意してください");
       return;
     }
 
@@ -29,12 +30,12 @@ export default function RegisterForm() {
     try {
       const result = await register(name, email, password);
       if (result.success) {
-        router.push("/");
+        router.push("/dashboard");
       } else {
-        setErrorMessage(result.error || "登録に失敗しました");
+        Sonner.toast.error(result.error || "登録に失敗しました");
       }
     } catch (error) {
-      setErrorMessage("登録中にエラーが発生しました");
+      Sonner.toast.error("登録中にエラーが発生しました");
     } finally {
       setIsLoading(false);
     }

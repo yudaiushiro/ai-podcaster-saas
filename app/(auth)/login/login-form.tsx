@@ -4,7 +4,16 @@ import { useState, FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/hooks/useAuth";
-import { toast } from "sonner";
+import * as Sonner from "sonner";
+
+// 代替のトースト通知実装
+const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+  if (type === 'error') {
+    Sonner.toast.error(message);
+  } else {
+    Sonner.toast.success(message);
+  }
+};
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -22,10 +31,10 @@ export default function LoginForm() {
       if (result.success) {
         router.push("/dashboard");
       } else {
-        toast.error(result.error || "ログインに失敗しました");
+        showToast(result.error || "ログインに失敗しました", 'error');
       }
     } catch (error) {
-      toast.error("ログイン中にエラーが発生しました");
+      showToast("ログイン中にエラーが発生しました", 'error');
     } finally {
       setIsLoading(false);
     }
