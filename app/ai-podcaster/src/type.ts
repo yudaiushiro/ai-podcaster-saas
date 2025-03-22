@@ -18,7 +18,7 @@ export interface PodcastScript {
   padding: number;
   script: ScriptData[];
   filename: string;
-  voicemap: Map<string, string>;
+  voicemap: Record<string, string>;
   ttsAgent: string;
   images: string[];
   aspectRatio: string;

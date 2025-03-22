@@ -61,7 +61,7 @@ export default function NewContentPage() {
           },
         ],
         filename: "dummy.mp3",
-        voicemap: new Map(),
+        voicemap: { "Host": "nova", "Guest": "onyx" },
         ttsAgent: "openai",
         images: [],
       };
