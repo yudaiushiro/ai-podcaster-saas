@@ -6,6 +6,10 @@ AIを活用して記事やテキストからポッドキャストや動画コン
 
 AI Podcaster SaaSは、ユーザーがURLまたはテキストを貼り付けるだけで、AIが自動的にポッドキャスト（音声のみ）や動画コンテンツを生成し、運営側がキュレーションして複数の自社チャンネル（PodcastプラットフォームやYouTubeなど）で配信できるサービスです。
 
+## 🎤 2025/03/23 ハッカソン発表資料
+
+聴くNewsPicks([スライド](https://www.canva.com/design/DAGifVM3-_I/tPCgFgrDeGYJwmKgYtRS6w/edit?utm_content=DAGifVM3-_I&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton))
+
 ## ✨ 主な機能
 
 - **コンテンツ自動生成**: 
