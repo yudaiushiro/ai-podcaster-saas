@@ -29,14 +29,12 @@ AI Podcaster SaaSは、ユーザーがURLまたはテキストを貼り付ける
 
 - **フロントエンド**: Next.js, React, Tailwind CSS, shadcn/ui
 - **バックエンド**: Next.js App Router + Server Actions
-- **データベース**: Supabase (PostgreSQL)
-- **認証**: NextAuth.js + Supabase Auth
-- **ストレージ**: Supabase Storage
+- **データベース/認証/ストレージ**: Supabase (PostgreSQL, Auth, Storage)
 - **AI/ML**:
   - GraphAI: AIエージェント管理と調整
-  - Claude (Anthropic): スクリプト生成
-  - ElevenLabs: 音声合成
-  - StabilityAI: 画像生成
+  - OpenAI: スクリプト生成と音声合成
+  - Nijivoice: 日本語音声合成（オプション）
+  - Google Imagen: 画像生成
 - **メディア処理**: FFmpeg
 
 ## 🚀 セットアップ手順
@@ -46,7 +44,7 @@ AI Podcaster SaaSは、ユーザーがURLまたはテキストを貼り付ける
 - Node.js v20.0.0以上
 - npm または Yarn
 - Supabaseアカウント
-- 各種AI API キー (Anthropic, ElevenLabs, StabilityAI など)
+- 各種AI API キー (OpenAI, Google Imagen, Nijivoice など)
 
 ### インストール
 
@@ -74,9 +72,8 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # AI APIs
 OPENAI_API_KEY=your-openai-key
-ANTHROPIC_API_KEY=your-anthropic-key
-STABILITY_API_KEY=your-stability-key
-ELEVENLABS_API_KEY=your-elevenlabs-key
+GOOGLE_PROJECT_ID=your-google-project-id
+NIJIVOICE_API_KEY=your-nijivoice-key
 
 # Other
 # ...
@@ -93,6 +90,32 @@ yarn dev
 ```
 
 アプリケーションは http://localhost:3000 で実行されます。
+
+### サブモジュールの管理
+
+本プロジェクトは`ai-podcaster`ディレクトリをGitサブモジュールとして管理しています。サブモジュールを正しく取得するには以下の手順に従ってください。
+
+1. サブモジュールを含めたリポジトリのクローン
+```bash
+git clone --recursive https://github.com/yourusername/ai-podcaster-saas.git
+cd ai-podcaster-saas
+```
+
+既にクローンしたリポジトリにサブモジュールを取得する場合：
+```bash
+git submodule update --init --recursive
+```
+
+2. サブモジュールの更新
+サブモジュールを最新の状態に更新するには：
+```bash
+git submodule update --remote
+```
+
+3. サブモジュールの利点
+- コアとなるAIポッドキャスト生成機能を分離して管理できます
+- 両リポジトリは独立して開発・バージョン管理が可能です
+- SaaSとしての機能と、AI生成コア部分を明確に分離できます
 
 ## 📖 使い方
 
@@ -143,19 +166,62 @@ yarn dev
 │   ├── (dashboard)/                    # ログイン後のダッシュボード
 │   ├── admin/                          # 管理者用画面
 │   ├── components/                     # コンポーネント
-│   ├── hooks/                          # カスタムフック
-│   ├── lib/                            # ユーティリティ
-│   │   ├── api/                        # API関連処理
-│   │   ├── auth/                       # 認証処理
-│   │   ├── db/                         # データベース
-│   │   ├── graphai/                    # GraphAI関連処理
-│   │   ├── storage/                    # ストレージ処理
-│   │   └── utils/                      # 共通関数
-│   ├── actions/                        # Server Actions
+│   └── ...
+├── ai-podcaster/src/                   # AIポッドキャスト生成コア
+│   ├── agents/                         # GraphAI エージェント
+│   ├── main.ts                         # 音声ファイル生成メイン処理
+│   ├── movie.ts                        # 動画ファイル生成処理
+│   ├── images.ts                       # 画像ファイル生成処理
+│   ├── imagep.ts                       # imagePrompt追加処理
+│   ├── split.ts                        # セリフ分割処理
+│   ├── fixtext.ts                      # セリフ修正処理
+│   ├── translate.ts                    # 翻訳処理
 │   └── ...
 ├── public/                             # 静的ファイル
+├── scripts/                            # スクリプトサンプル
+├── output/                             # 生成ファイル出力先
 ├── setup/                              # セットアップスクリプト
 └── ...
+```
+
+### AI Podcaster コア機能
+
+AI Podcasterのコア機能は`ai-podcaster/src/`ディレクトリに実装されています。主要ファイルと機能は以下の通りです：
+
+- **main.ts**: 音声ファイル生成のメイン処理
+- **movie.ts**: ポッドキャスト動画（映像）ファイル生成処理
+- **images.ts**: スクリプトから画像生成処理
+- **imagep.ts**: スクリプトのセリフにimagePromptを追加する処理
+- **split.ts**: 長いセリフを適切に分割する処理
+- **fixtext.ts**: 音声合成に適したテキストに修正する処理
+- **translate.ts**: スクリプトを日本語に翻訳する処理
+- **agents/**: GraphAIを使用したエージェント群
+  - **tts_openai_agent.ts**: OpenAI TTSエージェント
+  - **tts_nijivoice_agent.ts**: にじボイスTTSエージェント
+  - **add_bgm_agent.ts**: BGM追加エージェント
+  - **combine_files_agent.ts**: ファイル結合エージェント
+
+### スクリプト形式
+
+```javascript
+{
+  "title": "ポッドキャストのタイトル",
+  "description": "ポッドキャストの説明",
+  "reference": "参照元URL（オプション）", 
+  "tts": "openAI", // または "nijivoice", デフォルトは "openAI"
+  "voices": ["nova", "onyx"], // TTS特有の音声ID（ホストとその他）
+  "script": [
+    {
+      "speaker": "Host",
+      "text": "ホストのセリフ"
+    },
+    {
+      "speaker": "Guest",
+      "text": "ゲストのセリフ"
+    },
+    // ...
+  ]
+}
 ```
 
 ### 開発フロー
@@ -186,7 +252,7 @@ git checkout -b feature/your-feature-name
 
 質問やサポートが必要な場合は、Issueを作成するか、以下の連絡先までお問い合わせください：
 
-- Email: support@example.com
+- Email: yudai.ushiro@gmail.com
 
 ---
 

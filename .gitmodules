@@ -1,0 +1,3 @@
+[submodule "ai-podcaster"]
+	path = ai-podcaster
+	url = git@github.com:snakajima/ai-podcaster.git
